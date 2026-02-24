@@ -174,16 +174,21 @@ def start_screen():
         st.markdown("### 🎤 Speak Naturally")
 
         ctx = webrtc_streamer(
-            key="interview_stream",
-            audio_processor_factory=InterviewAudioProcessor,
+    key="interview_stream",
 
-            mode=WebRtcMode.SENDONLY,   # ✅ CRITICAL CLOUD FIX
+    audio_processor_factory=InterviewAudioProcessor,
 
-            media_stream_constraints={
-                "audio": True,
-                "video": False
-            },
-        )
+    media_stream_constraints={
+        "audio": {
+            "echoCancellation": True,
+            "noiseSuppression": True,
+            "autoGainControl": True,
+        },
+        "video": False,
+    },
+
+    async_processing=True,     # 🔥 VERY IMPORTANT
+)
 
         SPEECH_THRESHOLD = 0.01
         COOLDOWN_SECONDS = 2
