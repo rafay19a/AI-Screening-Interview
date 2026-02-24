@@ -1,0 +1,14 @@
+streamlit
+streamlit-webrtc
+openai
+numpy
+scikit-learn
+sentence-transformers
+fuzzywuzzy
+python-Levenshtein
+PyMuPDF
+transformers
+torch
+av
+opencv-python-headless
+Pillow
