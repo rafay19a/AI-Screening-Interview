@@ -185,7 +185,7 @@ def start_screen():
             },
         )
 
-        SPEECH_THRESHOLD = 3
+        SPEECH_THRESHOLD = 0.01
         COOLDOWN_SECONDS = 2
 
         if ctx.audio_processor:
@@ -196,6 +196,8 @@ def start_screen():
 
                 audio_data = np.concatenate(frames)
                 volume = np.abs(audio_data).mean()
+
+                st.write("Detected Volume:", volume) 
 
                 now = time.time()
 
