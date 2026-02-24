@@ -8,20 +8,30 @@ from matcher_ai import ai_parse_and_match
 from stt_tts import speech_to_text, text_to_speech
 from interview_agent import InterviewAgent
 
-from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, WebRtcMode
+from streamlit_webrtc import webrtc_streamer, AudioProcessorBase
 import av
 
+
 # --------------------------------------------------
-# REALTIME AUDIO PROCESSOR
+# REALTIME AUDIO PROCESSOR (CLOUD FIXED)
 # --------------------------------------------------
 class InterviewAudioProcessor(AudioProcessorBase):
+
     def __init__(self):
         self.frames = []
 
-    def recv_audio(self, frame):
+    def recv_audio(self, frame: av.AudioFrame):
+
         audio = frame.to_ndarray()
+
+        # ✅ CRITICAL NORMALIZATION FIX
+        if audio.dtype != np.float32:
+            audio = audio.astype(np.float32) / 32768.0
+
         self.frames.append(audio)
+
         return frame
+
 
 # --------------------------------------------------
 # SESSION STATE INIT
@@ -44,17 +54,18 @@ if "last_results_sorted" not in st.session_state:
 if "last_jd" not in st.session_state:
     st.session_state.last_jd = ""
 
-# 🔥 REALTIME STABILITY GUARDS
 if "processing_audio" not in st.session_state:
     st.session_state.processing_audio = False
 
 if "last_processed_time" not in st.session_state:
     st.session_state.last_processed_time = 0
 
+
 st.set_page_config(
     page_title="AI Resume Matcher + Interview Scheduling",
     layout="wide"
 )
+
 
 # --------------------------------------------------
 # MATCHER SCREEN
@@ -62,7 +73,6 @@ st.set_page_config(
 def matcher_screen():
 
     st.title("🤖 AI Resume Matcher + Interview Scheduling")
-    st.write("Upload resumes and paste a JD. Filter candidates by minimum skill match percentage.")
 
     jd = st.text_area("Paste Job Description (JD)", height=200)
 
@@ -81,7 +91,7 @@ def matcher_screen():
 
     if st.button("Run Matching"):
         if not jd or not uploaded_files:
-            st.warning("Please paste a JD and upload resumes.")
+            st.warning("Please paste JD & upload resumes.")
         else:
             results = []
 
@@ -113,24 +123,18 @@ def matcher_screen():
             if r.get("skill_match_percent", 0) >= min_skill_match
         ]
 
-        if filtered:
-            st.markdown("## ✅ Matching Results")
+        for r in filtered:
+            st.write(f"**Candidate:** {os.path.basename(r['resume_path'])}")
+            st.write(f"- Semantic Score: {r.get('semantic_score')}")
+            st.write(f"- Skill Match: {r.get('skill_match_percent')}%")
+            st.write("---")
 
-            for r in filtered:
-                st.write(f"**Candidate:** {os.path.basename(r['resume_path'])}")
-                st.write(f"- Semantic Score: {r.get('semantic_score')}")
-                st.write(f"- Skill Match: {r.get('skill_match_percent')}%")
-                st.write(f"- Email: {r.get('email')}")
-                st.write("---")
+        if st.button("🎙 Go to Voice Interview"):
+            st.session_state.page = "start"
 
-            if st.button("🎙 Go to Voice Interview"):
-                st.session_state.page = "start"
-
-        else:
-            st.warning("No candidates meet the minimum skill match criteria.")
 
 # --------------------------------------------------
-# INTERVIEW SCREEN (CLOUD-STABLE)
+# INTERVIEW SCREEN
 # --------------------------------------------------
 def start_screen():
 
@@ -143,7 +147,6 @@ def start_screen():
         st.session_state.current_question = None
         return
 
-    # ---- START INTERVIEW ----
     if not st.session_state.interview_started:
         if st.button("▶ Start Interview"):
 
@@ -166,29 +169,16 @@ def start_screen():
     if st.session_state.current_question:
         st.info(st.session_state.current_question)
 
-    # --------------------------------------------------
-    # REALTIME MIC STREAM (FIXED)
-    # --------------------------------------------------
     if st.session_state.interview_started:
 
         st.markdown("### 🎤 Speak Naturally")
 
         ctx = webrtc_streamer(
-    key="interview_stream",
-
-    audio_processor_factory=InterviewAudioProcessor,
-
-    media_stream_constraints={
-        "audio": {
-            "echoCancellation": True,
-            "noiseSuppression": True,
-            "autoGainControl": True,
-        },
-        "video": False,
-    },
-
-    async_processing=True,     # 🔥 VERY IMPORTANT
-)
+            key="interview_stream",
+            audio_processor_factory=InterviewAudioProcessor,
+            media_stream_constraints={"audio": True, "video": False},
+            async_processing=True,
+        )
 
         SPEECH_THRESHOLD = 0.01
         COOLDOWN_SECONDS = 2
@@ -196,14 +186,15 @@ def start_screen():
         if ctx.audio_processor:
 
             frames = ctx.audio_processor.frames
-            st.write("Frame Count:", len(frames)) 
+
+            st.write("Frame Count:", len(frames))
 
             if len(frames) > 30 and not st.session_state.processing_audio:
 
                 audio_data = np.concatenate(frames)
                 volume = np.abs(audio_data).mean()
 
-                st.write("Detected Volume:", volume) 
+                st.write("Detected Volume:", volume)
 
                 now = time.time()
 
@@ -232,19 +223,11 @@ def start_screen():
                     st.session_state.processing_audio = False
 
         if st.button("Finish Interview"):
-
-            if st.session_state.agent:
-
-                result = st.session_state.agent.final_result()
-
-                if result:
-                    st.markdown("## 🏁 Final Interview Result")
-                    st.metric("Overall Score", result["overall"])
-                    st.success(f"Verdict: {result['verdict']}")
-
             st.session_state.interview_started = False
             st.session_state.agent = None
             st.session_state.current_question = None
+            st.success("Interview Completed")
+
 
 # --------------------------------------------------
 # PAGE RENDER
