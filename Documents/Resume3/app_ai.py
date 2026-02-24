@@ -8,7 +8,7 @@ from matcher_ai import ai_parse_and_match
 from stt_tts import speech_to_text, text_to_speech
 from interview_agent import InterviewAgent
 
-from streamlit_webrtc import webrtc_streamer, AudioProcessorBase
+from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, WebRtcMode
 import av
 
 # --------------------------------------------------
@@ -57,7 +57,7 @@ st.set_page_config(
 )
 
 # --------------------------------------------------
-# MATCHER SCREEN (FULL VERSION RESTORED)
+# MATCHER SCREEN
 # --------------------------------------------------
 def matcher_screen():
 
@@ -130,7 +130,7 @@ def matcher_screen():
             st.warning("No candidates meet the minimum skill match criteria.")
 
 # --------------------------------------------------
-# INTERVIEW SCREEN (STABLE REALTIME MODE)
+# INTERVIEW SCREEN (CLOUD-STABLE)
 # --------------------------------------------------
 def start_screen():
 
@@ -163,12 +163,11 @@ def start_screen():
 
             st.audio(text_to_speech(first_q))
 
-    # ✅ Stable question display
     if st.session_state.current_question:
         st.info(st.session_state.current_question)
 
     # --------------------------------------------------
-    # REALTIME MIC STREAM
+    # REALTIME MIC STREAM (FIXED)
     # --------------------------------------------------
     if st.session_state.interview_started:
 
@@ -177,7 +176,13 @@ def start_screen():
         ctx = webrtc_streamer(
             key="interview_stream",
             audio_processor_factory=InterviewAudioProcessor,
-            media_stream_constraints={"audio": True, "video": False},
+
+            mode=WebRtcMode.SENDONLY,   # ✅ CRITICAL CLOUD FIX
+
+            media_stream_constraints={
+                "audio": True,
+                "video": False
+            },
         )
 
         SPEECH_THRESHOLD = 3
@@ -191,8 +196,6 @@ def start_screen():
 
                 audio_data = np.concatenate(frames)
                 volume = np.abs(audio_data).mean()
-
-                st.write("Mic Volume:", volume)
 
                 now = time.time()
 
@@ -222,12 +225,14 @@ def start_screen():
 
         if st.button("Finish Interview"):
 
-            result = st.session_state.agent.final_result()
+            if st.session_state.agent:
 
-            if result:
-                st.markdown("## 🏁 Final Interview Result")
-                st.metric("Overall Score", result["overall"])
-                st.success(f"Verdict: {result['verdict']}")
+                result = st.session_state.agent.final_result()
+
+                if result:
+                    st.markdown("## 🏁 Final Interview Result")
+                    st.metric("Overall Score", result["overall"])
+                    st.success(f"Verdict: {result['verdict']}")
 
             st.session_state.interview_started = False
             st.session_state.agent = None
