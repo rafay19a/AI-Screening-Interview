@@ -191,6 +191,7 @@ def start_screen():
         if ctx.audio_processor:
 
             frames = ctx.audio_processor.frames
+            st.write("Frame Count:", len(frames)) 
 
             if len(frames) > 30 and not st.session_state.processing_audio:
 
