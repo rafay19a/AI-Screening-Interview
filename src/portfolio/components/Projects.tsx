@@ -19,6 +19,22 @@ const projects = [
     tags: ["Full Stack", "E-commerce", "SEO"]
   },
   {
+    title: "Shama-e-Hayat",
+    category: "E-commerce",
+    impact: "International Expansion",
+    description: "Digital storefront for premium organic candles, facilitating market expansion from Pakistan to France with localized experiences.",
+    link: "https://shama-e-hayat.vercel.app",
+    tags: ["Next.js", "Internationalization", "UX"]
+  },
+  {
+    title: "Ora De Nuit",
+    category: "Hospitality",
+    impact: "Brand Digitization",
+    description: "A sophisticated web presence for an American restaurant, focusing on visual storytelling and seamless reservation flows.",
+    link: "https://ora-de-nuit.vercel.app",
+    tags: ["React", "UI/UX", "Hospitality"]
+  },
+  {
     title: "Roameo PMS",
     category: "SaaS",
     impact: "Hospitality Scaling",

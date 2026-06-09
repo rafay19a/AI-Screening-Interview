@@ -2,9 +2,9 @@ import { motion } from 'framer-motion';
 
 const stats = [
   { label: "AI Workload Reduction", value: "60%" },
-  { label: "Systems Built", value: "10+" },
+  { label: "Systems Built", value: "5+" },
   { label: "Performance Boost", value: "2.4x" },
-  { label: "Users Impacted", value: "5K+" }
+  { label: "Years Experience", value: "2+" }
 ];
 
 export const Impact = () => {
