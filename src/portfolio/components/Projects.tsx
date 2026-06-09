@@ -1,121 +1,96 @@
-import { motion, type Variants } from 'framer-motion';
-import { ExternalLink, ShoppingCart, Plane, Utensils, Hotel, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 
 const projects = [
   {
+    title: "Hired By AI",
+    category: "AI Recruitment",
+    impact: "60% reduction in HR workload",
+    description: "An automated recruitment ecosystem using semantic search and voice-based AI interviewing. Built with Whisper, LLMs, and Streamlit.",
+    link: "#",
+    tags: ["NLP", "LLM", "Whisper", "Python"]
+  },
+  {
     title: "Buttertune",
-    description: "Full-stack e-commerce platform for organic skincare. High-performance catalog and secure checkout integration.",
+    category: "E-commerce",
+    impact: "Premium Skincare Platform",
+    description: "A full-stack commerce engine designed for high-end organic products. Focused on SEO, speed, and conversion architecture.",
     link: "https://buttertuneskincare.com/",
-    tags: ["E-commerce", "Full Stack"],
-    icon: <ShoppingCart className="w-5 h-5" />
+    tags: ["Full Stack", "E-commerce", "SEO"]
   },
   {
     title: "Roameo PMS",
-    description: "Enterprise-grade hotel management system. Automated bookings and property scaling solutions.",
+    category: "SaaS",
+    impact: "Hospitality Scaling",
+    description: "Property management system specifically engineered for resorts in Kashmir. Handles enterprise bookings and guest logic.",
     link: "https://roameo-pms.vercel.app/",
-    tags: ["SaaS", "Management"],
-    icon: <Hotel className="w-5 h-5" />
+    tags: ["SaaS", "Management", "Property Tech"]
   },
   {
     title: "Kartarpur Journey",
-    description: "Sikh tourism platform facilitating heritage travel and seamless user experiences.",
+    category: "Tourism",
+    impact: "Heritage Tech",
+    description: "Specialized platform for Sikh heritage tourism. Built with focus on accessibility and modern travel flows.",
     link: "https://kartarpur-journey-2uev.vercel.app",
-    tags: ["Next.js", "Hospitality"],
-    icon: <Plane className="w-5 h-5" />
-  },
-  {
-    title: "Ora De Nuit",
-    description: "Digital presence for high-end American dining, focusing on minimalist UI and speed.",
-    link: "https://ora-de-nuit.vercel.app/",
-    tags: ["UI/UX", "Restaurant"],
-    icon: <Utensils className="w-5 h-5" />
-  },
-  {
-    title: "Shama-e-Hayat",
-    description: "Market expansion platform for organic products, bridging Pakistan and France.",
-    link: "https://shama-e-hayat.vercel.app/",
-    tags: ["Global", "E-commerce"],
-    icon: <Sparkles className="w-5 h-5" />
+    tags: ["Next.js", "UX", "Travel"]
   }
 ];
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3
-    }
-  }
-};
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-};
-
 export const Projects = () => {
   return (
-    <section id="projects" className="py-32 bg-black px-4 border-t border-white/5">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-24"
-        >
-          <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tighter">Selected Projects</h2>
-          <p className="text-white/40 max-w-xl font-light">
-            A curated selection of digital products built with a focus on clean code and exceptional user experience.
+    <section id="projects" className="py-48 bg-black px-6 md:px-12 relative border-t border-white/5">
+      <div className="max-w-screen-2xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-baseline mb-32 border-b border-white/10 pb-24">
+          <h2 className="text-[8vw] md:text-[5vw] font-medium tracking-tighter-premium mb-8 md:mb-0">Selected<br />Works.</h2>
+          <p className="text-white/40 max-w-sm font-light text-lg italic">
+            "Engineering solutions that redefine how humans interact with technology."
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24"
-        >
+        <div className="space-y-48">
           {projects.map((project) => (
             <motion.div
               key={project.title}
-              variants={item}
-              className="group"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              className="grid grid-cols-1 md:grid-cols-12 gap-12 group"
             >
-              <a href={project.link} target="_blank" rel="noreferrer" className="block">
-                <div className="aspect-[16/10] bg-white/5 border border-white/10 rounded-sm mb-8 overflow-hidden relative flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-700">
-                  <div className="text-white/20 group-hover:text-white/80 transition-colors duration-500 scale-150 group-hover:scale-125 transition-transform duration-700">
-                    {project.icon}
+              <div className="md:col-span-7 overflow-hidden bg-white/5 aspect-[16/9] relative">
+                <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:scale-105 transition-transform duration-1000">
+                  <span className="text-[10vw] font-bold tracking-tighter uppercase opacity-10">{project.title.slice(0, 2)}</span>
+                </div>
+                <a href={project.link} target="_blank" rel="noreferrer" className="absolute inset-0 z-10 cursor-none" />
+              </div>
+
+              <div className="md:col-span-5 flex flex-col justify-between py-4">
+                <div>
+                  <div className="flex justify-between items-baseline mb-12">
+                    <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">{project.category}</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/80">{project.impact}</span>
                   </div>
-                  <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute top-6 right-6 p-2 bg-black/80 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <ExternalLink className="w-4 h-4 text-white" />
-                  </div>
+
+                  <h3 className="text-5xl font-medium tracking-tighter mb-8 group-hover:translate-x-2 transition-transform duration-500">{project.title}</h3>
+                  <p className="text-white/50 text-xl font-light leading-relaxed mb-12">
+                    {project.description}
+                  </p>
                 </div>
 
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-xl font-medium text-white mb-2 tracking-tight group-hover:pl-2 transition-all duration-300">
-                      {project.title}
-                    </h3>
-                    <p className="text-sm text-white/40 font-light mb-4 max-w-sm leading-relaxed">
-                      {project.description}
-                    </p>
-                    <div className="flex gap-4">
-                      {project.tags.map(tag => (
-                        <span key={tag} className="text-[10px] uppercase tracking-widest text-white/30 font-medium">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                <div>
+                  <div className="flex flex-wrap gap-x-8 gap-y-4 mb-12">
+                    {project.tags.map(tag => (
+                        <span key={tag} className="text-[10px] uppercase tracking-widest text-white/30">{tag}</span>
+                    ))}
                   </div>
+                  <a href={project.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] font-bold group-hover:gap-4 transition-all">
+                    View Project <ArrowUpRight className="w-4 h-4" />
+                  </a>
                 </div>
-              </a>
+              </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

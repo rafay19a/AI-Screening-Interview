@@ -2,61 +2,48 @@ import { motion } from 'framer-motion';
 
 const experiences = [
   {
-    title: "Data Science Intern",
+    title: "Data Science Lead Intern",
     company: "Ram Burners",
-    period: "2025",
-    description: "Architected predictive ML models and automated data ingestion pipelines using SQL and Python."
+    period: "Mar — May 2025",
+    description: "Developed automated data processing workflows and predictive ML models to drive executive decision-making."
   },
   {
-    title: "AI Solutions Intern",
+    title: "AI Systems Intern",
     company: "InternCraft",
-    period: "2025",
-    description: "Engineered high-accuracy analytical dashboards and optimized production-level data preprocessing."
+    period: "Jul — Sep 2025",
+    description: "Engineered production-level data pipelines and high-accuracy dashboards for real-world client datasets."
   },
   {
     title: "Technical Content Strategist",
     company: "Spreadcheaters",
-    period: "2024",
-    description: "Developed SEO-driven technical documentation and content alignment strategies for digital growth."
+    period: "Sep — Dec 2024",
+    description: "Crafted SEO-driven technical architecture narratives and market expansion strategies."
   }
 ];
 
 export const Experience = () => {
   return (
-    <section className="py-32 bg-black px-4 border-t border-white/5">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           className="mb-24"
-        >
-          <h2 className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tighter">Experience</h2>
-        </motion.div>
+    <section id="experience" className="py-48 bg-black px-6 md:px-12 border-t border-white/5">
+      <div className="max-w-screen-2xl mx-auto">
+        <h2 className="text-5xl font-medium tracking-tighter-premium mb-32">Experience.</h2>
 
-        <div className="space-y-32">
+        <div className="space-y-px">
           {experiences.map((exp, index) => (
             <motion.div
               key={`${exp.company}-${index}`}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col md:flex-row gap-8 md:gap-24"
+              transition={{ duration: 1 }}
+              className="group border-t border-white/10 py-16 grid grid-cols-1 md:grid-cols-12 gap-12 items-baseline hover:bg-white/[0.02] transition-colors px-4 -mx-4"
             >
-              <div className="md:w-1/4">
-                <span className="text-[10px] uppercase tracking-[0.3em] text-white/20 font-bold block mb-2">{exp.period}</span>
-                <h3 className="text-white font-medium tracking-tight uppercase text-xs">{exp.company}</h3>
-              </div>
-
-              <div className="md:w-3/4">
-                <h4 className="text-2xl font-medium text-white mb-6 tracking-tight">{exp.title}</h4>
-                <p className="text-white/40 leading-relaxed font-light max-w-xl text-lg">
-                  {exp.description}
-                </p>
-              </div>
+              <div className="md:col-span-2 text-[10px] uppercase tracking-[0.3em] text-white/30">{exp.period}</div>
+              <div className="md:col-span-4 text-3xl tracking-tight font-medium group-hover:pl-4 transition-all duration-500">{exp.company}</div>
+              <div className="md:col-span-3 text-white/50 italic font-light">{exp.title}</div>
+              <div className="md:col-span-3 text-sm text-white/40 leading-relaxed font-light">{exp.description}</div>
             </motion.div>
           ))}
+          <div className="border-t border-white/10" />
         </div>
       </div>
     </section>
