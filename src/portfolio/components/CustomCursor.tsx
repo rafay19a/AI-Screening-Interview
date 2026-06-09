@@ -46,7 +46,7 @@ export const CustomCursor = () => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center"
+      className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center pointer-events-none"
       style={{
         x: mouseX,
         y: mouseY,
