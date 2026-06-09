@@ -2,44 +2,59 @@ import { Hero } from './components/Hero';
 import { Projects } from './components/Projects';
 import { Skills } from './components/Skills';
 import { Experience } from './components/Experience';
-import { Mail, Globe, User } from 'lucide-react';
+import { CustomCursor } from './components/CustomCursor';
+import { Mail } from 'lucide-react';
+
+const GithubIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+const LinkedinIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
 
 const PortfolioPage = () => {
   return (
-    <div className="bg-slate-950 min-h-screen text-slate-200 selection:bg-blue-500/30 selection:text-blue-200">
+    <div className="bg-black min-h-screen text-white selection:bg-white selection:text-black cursor-none">
+      <CustomCursor />
       <Hero />
       <div className="relative">
-        {/* Glow effects between sections */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent" />
         <Projects />
         <Skills />
         <Experience />
       </div>
 
-      <footer className="py-20 border-t border-slate-900 bg-slate-950 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
-          <div>
-            <h2 className="text-2xl font-bold text-white mb-2">Abdul Rafay Arshad</h2>
-            <p className="text-slate-500">AI Engineer & Full Stack Developer</p>
+      <footer className="py-32 border-t border-white/5 bg-black px-4">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
+          <div className="text-center md:text-left">
+            <h2 className="text-3xl font-medium text-white mb-4 tracking-tighter">Abdul Rafay Arshad</h2>
+            <p className="text-white/40 font-light">AI Engineer & Full Stack Developer</p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-8">
-             <a href="mailto:rafay19a@gmail.com" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-              <Mail className="w-5 h-5" />
+          <div className="flex flex-wrap justify-center gap-10">
+             <a href="mailto:rafay19a@gmail.com" className="flex items-center gap-3 text-white/40 hover:text-white transition-colors font-medium text-sm uppercase tracking-widest">
+              <Mail className="w-4 h-4" />
               Email
             </a>
-            <a href="https://www.linkedin.com/in/abdul-rafay-arshad-63567a21b" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-              <User className="w-5 h-5" />
+            <a href="https://www.linkedin.com/in/abdul-rafay-arshad-a39b1b229?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-white/40 hover:text-white transition-colors font-medium text-sm uppercase tracking-widest">
+              <LinkedinIcon />
               LinkedIn
             </a>
-            <a href="#" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-              <Globe className="w-5 h-5" />
+            <a href="https://github.com/rafay19a" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-white/40 hover:text-white transition-colors font-medium text-sm uppercase tracking-widest">
+              <GithubIcon />
               GitHub
             </a>
           </div>
 
-          <div className="text-slate-600 text-sm">
-            © {new Date().getFullYear()} • Built with React & Framer Motion
+          <div className="text-white/20 text-[10px] uppercase tracking-widest font-medium">
+            © {new Date().getFullYear()} • Crafted with Precision
           </div>
         </div>
       </footer>
